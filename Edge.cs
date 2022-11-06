@@ -31,8 +31,8 @@ namespace BestFirstSearch
         // Attribute Definition.
         //---------------------------------------------------------------------
         //should have getters and setters
-        public int weight;
-        public Node node;
+        private int weight;
+        private Node node;
 
         //------------------------------------------------------------------------
         //  Method Name : Edge
@@ -45,6 +45,21 @@ namespace BestFirstSearch
         {
             this.weight = weight;
             this.node = n;
+        }
+
+        public void setWeight(int weight){
+            this.weight = weight;
+        }
+
+        public int getWeight(){
+            return this.weight;
+        }
+
+        public void setNode(Node n){
+            this.node = n;
+        }
+        public Node getNode(){
+            return this.node;
         }
     }
 }

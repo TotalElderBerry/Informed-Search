@@ -39,12 +39,12 @@ namespace BestFirstSearch
         // Attribute Definition.
         //---------------------------------------------------------------------
         //better to have getters and setters
-        public string name;
-        public int f;
-        public int h;
-        public int g;
-        public Node? parent;
-        public bool isVisited;
+        private string name;
+        private int f;
+        private int h;
+        private int g;
+        private Node? parent;
+        private bool isVisited;
         public LinkedList<Edge> neighbors;
 
         public Node()
@@ -68,6 +68,50 @@ namespace BestFirstSearch
         {
             Edge e = new Edge(n, weight);
             neighbors.AddLast(e);
+        }
+
+        public void setName(String name){
+            this.name = name;
+        }
+
+        public String getName(){
+            return this.name;
+        }
+
+        public void setHvalue(int h){
+            this.h = h;
+        }
+
+        public String getHvalue(){
+            return this.h;
+        }
+
+        public void setGvalue(int g){
+            this.g = g;
+        }
+
+        public String getGvalue(){
+            return this.g;
+        }
+
+        public void setParent(Node n){
+            this.parent = n;
+        }
+
+        public Node getParent(){
+            return this.parent
+        }
+
+        public void setIsVisited(boolean b){
+            this.isVisited = b;
+        }
+
+        public boolean isVisited(){
+            return this.isVisited;
+        }
+
+        public LinkedList<Edge> getEdges(){
+            return this.neighbors;
         }
     }
 }
