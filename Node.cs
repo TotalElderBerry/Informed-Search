@@ -41,9 +41,9 @@ namespace BestFirstSearch
         //better to have getters and setters
         private string name;
         private int f;
-        private int h;
+            private int h;
         private int g;
-        private Node? parent;
+        private Node parent;
         private bool isVisited;
         public LinkedList<Edge> neighbors;
 
@@ -82,7 +82,7 @@ namespace BestFirstSearch
             this.h = h;
         }
 
-        public String getHvalue(){
+        public int getHvalue(){
             return this.h;
         }
 
@@ -90,8 +90,20 @@ namespace BestFirstSearch
             this.g = g;
         }
 
-        public String getGvalue(){
+        public int getGvalue(){
             return this.g;
+        }
+
+        public void setFvalue(int h){
+            this.f = h;
+        }
+
+        public void setFvalue(){
+            this.f = this.h + this.g;
+        }
+
+        public int getFvalue(){
+            return this.f;
         }
 
         public void setParent(Node n){
@@ -99,18 +111,18 @@ namespace BestFirstSearch
         }
 
         public Node getParent(){
-            return this.parent
+            return this.parent;
         }
 
-        public void setIsVisited(boolean b){
+        public void setIsVisited(bool b){
             this.isVisited = b;
         }
 
-        public boolean isVisited(){
+        public bool getIsVisited(){
             return this.isVisited;
         }
 
-        public LinkedList<Edge> getEdges(){
+        public LinkedList<Edge> getNeighbors(){
             return this.neighbors;
         }
     }

@@ -30,6 +30,7 @@
 //------------------------------------------------------------------------
 // $000 -------  0.1  001 2022-11-5 cabrillosa  First Release.
 using System;
+using System.Collections.Generic;
 namespace BestFirstSearch
 {
     public class GraphTraversal
@@ -61,8 +62,8 @@ namespace BestFirstSearch
         public void add_place(string place, int h)
         {
             Node n = new Node();
-            n.name = place;
-            n.h = h;
+            n.setName(place);
+            n.setHvalue(h);
             graph.AddLast(n);
 
         }
@@ -78,8 +79,8 @@ namespace BestFirstSearch
         //------------------------------------------------------------------------
         public int connect(string place1, string place2, int dist)
         {
-            Node? n1 = getNodeByName(place1);
-            Node? n2 = getNodeByName(place2);
+            Node n1 = getNodeByName(place1);
+            Node n2 = getNodeByName(place2);
 
             if (n1 == null || n2 == null)
             {
@@ -104,12 +105,12 @@ namespace BestFirstSearch
 
             while (iterator.MoveNext())
             {
-                Console.Write(iterator.Current.name +"::");
-                LinkedList<Edge>.Enumerator edges = iterator.Current.neighbors.GetEnumerator();
+                Console.Write(iterator.Current.getName() +"::");
+                LinkedList<Edge>.Enumerator edges = iterator.Current.getNeighbors().GetEnumerator();
 
                 while(edges.MoveNext())
                 {
-                    Console.Write(edges.Current.node.name + " -> ");
+                    Console.Write(edges.Current.getNode().getName()+ " -> ");
                 }
                 Console.WriteLine(); 
             }
@@ -124,44 +125,7 @@ namespace BestFirstSearch
         //------------------------------------------------------------------------
         public void GreedyBestFirstSearch(string start_place, string goal_place)
         {
-            Node? start = getNodeByName(start_place);
-            PriorityQueue<Node, int> pq = new PriorityQueue<Node, int>();
-
-            if(start == null)
-            {
-                Console.WriteLine("Node not found!");
-                return;
-            }
-
-            start.f = start.h;
-            start.isVisited = true;
-            pq.Enqueue(start, start.f);
-
-
-            while(pq.Count > 0)
-            {
-                Node current = pq.Dequeue();
-                current.isVisited = true;
-                if(current.name == goal_place)
-                {
-                    //we reached the goal
-                    reconstruct_path(current);
-                    return;
-                }
-
-                LinkedList<Edge>.Enumerator iterator = current.neighbors.GetEnumerator();
-                while(iterator.MoveNext())
-                {
-                    if(iterator.Current.node.isVisited != true)
-                    {
-                        Node temp = iterator.Current.node;
-                        temp.f = temp.h;
-                        temp.parent = current;
-                        pq.Enqueue(iterator.Current.node, temp.f);
-                    }    
-                }
-            }
-            Console.WriteLine("No path to goal!");
+          
         }
 
         //------------------------------------------------------------------------
@@ -173,7 +137,7 @@ namespace BestFirstSearch
         //------------------------------------------------------------------------
         public void astar(string start_place, string goal_place)
         {
-            Node ?start = getNodeByName(start_place);
+            Node start = getNodeByName(start_place);
 
             if (start == null)
             {
@@ -184,16 +148,16 @@ namespace BestFirstSearch
             LinkedList<Node> openlist = new LinkedList<Node>();
             LinkedList<Node> closedlist = new LinkedList<Node>();
 
-            start.f = start.g + start.h;
+            start.setFvalue();
             openlist.AddLast(start);
 
             while(openlist.Count > 0)
             {
                 Node current = getLowestFscore(openlist);
 
-                if(current.name == goal_place)
+                if(current.getName() == goal_place)
                 {
-                    Console.WriteLine(current.f + " is the final F score!");
+                    // Console.WriteLine(current.f + " is the final F score!");
                     reconstruct_path(current);
                     return;
                 }
@@ -203,26 +167,31 @@ namespace BestFirstSearch
                 while(neighbor.MoveNext())
                 {
                     Edge m = neighbor.Current;
-                    int g_so_far = current.g + m.weight;
+                    int g_so_far = current.getGvalue() + m.getWeight();
 
-                    if(!closedlist.Contains(m.node) && !openlist.Contains(m.node))
+                    if(!closedlist.Contains(m.getNode()) && !openlist.Contains(m.getNode()))
                     {
-                        m.node.parent = current;
-                        m.node.g = g_so_far;
-                        m.node.f = m.node.g + m.node.h;
-                        openlist.AddLast(m.node);
+                        // m.node.parent = current;
+                        m.getNode().setParent(current);
+                        // m.node.g = g_so_far;
+                        m.getNode().setGvalue(g_so_far);
+                        // m.node.f = m.node.g + m.node.h;
+                        m.getNode().setFvalue();
+                        openlist.AddLast(m.getNode());
                     }
                     else
                     {
-                        if(g_so_far < m.node.g)
+                        if(g_so_far < m.getNode().getGvalue())
                         {
-                            m.node.parent = current;
-                            m.node.g = g_so_far;
-                            m.node.f = m.node.g + m.node.h;
-
-                            if (closedlist.Contains(m.node))
+                            // m.node.parent = current;
+                            m.getNode().setParent(current);
+                            // m.node.g = g_so_far;
+                            m.getNode().setGvalue(g_so_far);
+                            // m.node.f = m.node.g + m.node.h;
+                            m.getNode().setFvalue();
+                            if (closedlist.Contains(m.getNode()))
                             {
-                                openlist.AddLast(m.node);
+                                openlist.AddLast(m.getNode());
                             }
                         }
                     }
@@ -244,7 +213,7 @@ namespace BestFirstSearch
         //  Return      : Node, if name is found
         //                null, if name is not found
         //------------------------------------------------------------------------
-        private Node? getNodeByName(string name)
+        private Node getNodeByName(string name)
         {
             LinkedList<Node>.Enumerator iterator = graph.GetEnumerator();
 
@@ -252,7 +221,7 @@ namespace BestFirstSearch
             {
                 Node n = iterator.Current;
 
-                if(n.name == name)
+                if(n.getName() == name)
                 {
                     //string is in the graph, return!
                     return n;
@@ -269,21 +238,21 @@ namespace BestFirstSearch
         //  Return      : Node, if name is found
         //                null, if name is not found
         //------------------------------------------------------------------------
-        private void reconstruct_path(Node? path)
+        private void reconstruct_path(Node path)
         {
             LinkedList<Node> nodes = new LinkedList<Node>();
 
             while(path != null)
             {
                 nodes.AddFirst(path);
-                path = path.parent;
+                path = path.getParent();
             }
 
             LinkedList<Node>.Enumerator temp = nodes.GetEnumerator();
 
             while(temp.MoveNext())
             {
-                Console.Write(temp.Current.name + "->");
+                Console.Write(temp.Current.getName() + "->");
             }
             Console.WriteLine();
         }
@@ -303,7 +272,7 @@ namespace BestFirstSearch
 
             while(iterator.MoveNext())
             {
-                if(lowest.f > iterator.Current.f)
+                if(lowest.getFvalue() > iterator.Current.getFvalue())
                 {
                     lowest = iterator.Current;
                 }
