@@ -40,16 +40,16 @@ namespace BestFirstSearch
         //---------------------------------------------------------------------
         //better to have getters and setters
         private string name;
-        private int f;
-            private int h;
-        private int g;
+        private double f;
+        private double h;
+        private double g;
         private Node parent;
         private bool isVisited;
-        public LinkedList<Edge> neighbors;
+        private LinkedList<Edge> neighbors;
 
         public Node()
         {
-            this.f = 0; //other sources prefers setting this to int.MAXVALUE
+            this.f = 0; //other sources prefers setting this to double.MAXVALUE
             this.g = 0;
             this.h = 0;
             this.isVisited = false;
@@ -61,10 +61,10 @@ namespace BestFirstSearch
         //  Method Name : AddNeighbors
         //  Description : adds a neighbor to the current node
         //  Arguments   : Node n
-        //                int weight
+        //                double weight
         //  Return      : void
         //------------------------------------------------------------------------
-        public void AddNeighbors(Node n, int weight)
+        public void AddNeighbors(Node n, double weight)
         {
             Edge e = new Edge(n, weight);
             neighbors.AddLast(e);
@@ -78,31 +78,32 @@ namespace BestFirstSearch
             return this.name;
         }
 
-        public void setHvalue(int h){
+        public void setHvalue(double h){
+            this.f = h;
             this.h = h;
         }
 
-        public int getHvalue(){
+        public double getHvalue(){
             return this.h;
         }
 
-        public void setGvalue(int g){
+        public void setGvalue(double g){
             this.g = g;
         }
 
-        public int getGvalue(){
+        public double getGvalue(){
             return this.g;
         }
 
-        public void setFvalue(int h){
-            this.f = h;
-        }
-
         public void setFvalue(){
-            this.f = this.h + this.g;
+            this.f = this.h;
         }
 
-        public int getFvalue(){
+        public void setFvalue(double g_so_far){
+            this.f = this.h + g_so_far;
+        }
+
+        public double getFvalue(){
             return this.f;
         }
 
