@@ -71,6 +71,26 @@ namespace BestFirstSearch
 
         }
 
+        public void add_place(string place, double x, double y)
+        {
+            place = place.ToLower();
+            Node n = new Node(x,y);
+            n.setName(place);
+            graph.AddLast(n);
+        }
+
+        public void solveHeuristic(string target_place){
+            target_place = target_place.ToLower();
+            Node target = getNodeByName(target_place);
+            LinkedList<Node>.Enumerator iterator = graph.GetEnumerator();
+            while(iterator.MoveNext()){
+                Node start = iterator.Current;
+                start.setHvalue(target);
+            }
+        }
+
+        
+
         //------------------------------------------------------------------------
         //  Method Name : connect
         //  Description : Connect one vertex to another vertex with specified weight
@@ -130,6 +150,7 @@ namespace BestFirstSearch
         //------------------------------------------------------------------------
         public void GreedyBestFirstSearch(string start_place, string goal_place)
         {
+            solveHeuristic(goal_place);
             start_place = start_place.ToLower();
             Node start = getNodeByName(start_place);
             if(start == null) return; //start place not found
@@ -176,6 +197,7 @@ namespace BestFirstSearch
 
 
         public void myastar(string start_place,string goal_place){
+                solveHeuristic(goal_place);
                 start_place = start_place.ToLower();
                 Node start = getNodeByName(start_place);
                 if(start == null) return; //no start place found

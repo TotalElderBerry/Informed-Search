@@ -43,6 +43,8 @@ namespace BestFirstSearch
         private double f;
         private double h;
         private double g;
+        private double x_coordinate;
+        private double y_coordinate;
         private Node parent;
         private bool isVisited;
         private LinkedList<Edge> neighbors;
@@ -55,6 +57,11 @@ namespace BestFirstSearch
             this.isVisited = false;
             this.parent = null;
             this.neighbors = new LinkedList<Edge>();
+        }
+
+        public Node(double x,double y):this(){
+            x_coordinate = x;
+            y_coordinate = y;
         }
 
         //------------------------------------------------------------------------
@@ -76,6 +83,22 @@ namespace BestFirstSearch
 
         public String getName(){
             return this.name;
+        }
+
+        public double getXvalue(){
+            return this.x_coordinate;
+        }
+
+        public double getYvalue(){
+            return this.y_coordinate;
+        }
+
+        public double getManhattanDistance(Node target){
+            return Math.Abs(this.getXvalue() - target.getXvalue()) + Math.Abs(this.getYvalue() - target.getYvalue());
+        }
+
+        public void setHvalue(Node target){
+            this.h = this.f = getManhattanDistance(target);
         }
 
         public void setHvalue(double h){
