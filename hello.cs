@@ -8,7 +8,7 @@ namespace BestFirstSearch
             GraphTraversal gt = new GraphTraversal();
             
             //places
-            //add_place(place,heuristic value)
+            //add_place(place,lat,long)
             gt.add_place("Cebu City Sports Center",10.300473258744963, 123.89521345049); // heuristic 0
             gt.add_place("Zapatera Elementary School",10.30342890415081, 123.90173658279558);
             gt.add_place("St. Peter",10.304842838885044, 123.90374830062771);
@@ -42,52 +42,51 @@ namespace BestFirstSearch
 
             //connect edges
             gt.connect("Cebu City Sports Center","Zapatera Elementary School",1);
+            gt.connect("Cebu City Sports Center","Quest Hotel",3.3);
             gt.connect("Zapatera Elementary School","St. Peter",0.5);
             gt.connect("St. Peter","DSWD 7",2.2);
+            gt.connect("St. Peter","Ayala Terraces",3);
             gt.connect("DSWD 7","Metrobank",.55);
-            gt.connect("DSWD 7","Landers Superstore",1.2);
-            gt.connect("Metrobank","Landers Superstore",1.3);
             gt.connect("Landers Superstore","Ayala Terraces",0.55);
-            gt.connect("Ayala Terraces","Quest Hotel",75);
-            gt.connect("Quest Hotel","UP Cebu",0.75);
-            gt.connect("UP Cebu","Waterfront Hotel",1.8);
+            gt.connect("Landers Superstore","UC Banilad",3.9);
+            gt.connect("Ayala Terraces","UC Banilad",2.6);
+            gt.connect("Ayala Terraces","Waterfront Hotel",1.8);
+            gt.connect("Ayala Terraces","Quest Hotel",0.55);
+            gt.connect("UP Cebu","Sugbo Mercado",2.3);
             gt.connect("Waterfront Hotel","Ayala Central Bloc",1.3);
-            gt.connect("Waterfront Hotel","Sugbo Mercado",2.8);
             gt.connect("Sugbo Mercado","Ayala Central Bloc",.24);
-            gt.connect("Sugbo Mercado","Apas Barangay Hall",1.1);
+            gt.connect("Sugbo Mercado","Apas Barangay Hall",1);
             gt.connect("Apas Barangay Hall","Marco Polo Plaza",3.8);
             gt.connect("Apas Barangay Hall","5G Coffee",.19);
-            gt.connect("Marco Polo Plaza","Oakridge Residences",2.2);
-            gt.connect("Oakridge Residences","5G Coffee",.55);
-            gt.connect("5G Coffee","Gaisano Country Mall",1);
+            gt.connect("Oakridge Residences","5G Coffee",.6);
+            gt.connect("Oakridge Residences","Gaisano Country Mall",1.1);
             gt.connect("Gaisano Country Mall","Banilad Town Center",.28);
             gt.connect("Gaisano Country Mall","UC Banilad",.042);
             gt.connect("UC Banilad","Banilad Town Center",.4);
             gt.connect("Banilad Town Center","Coffee Factory",.5);
-            gt.connect("Coffee Factory","UV Gullas",.8);
+            gt.connect("Banilad Town Center","UV Gullas",1.1);
             gt.connect("UV Gullas","Bright Academy",.11);
-            gt.connect("UV Gullas","Family Park",1.1);
             gt.connect("Bright Academy","USC Talamban",.85);
             gt.connect("USC Talamban","Family Park",.19);
             gt.connect("Family Park","Grand Mall Talamban",1.4);
-            gt.connect("Grand Mall Talamban","Time Square Talamban",.7);
             gt.connect("Grand Mall Talamban","Talamban Complex",.65);
-            gt.connect("Time Square Talamban","Papsys's BBQ",.45);
-            gt.connect("Papsys's BBQ","Talamban Complex",.7);
+            gt.connect("Talamban Complex","Time Square Talamban",.22);
             gt.connect("Talamban Complex","Cebu North General Hospital",.45);
-            gt.connect("Talamban Complex","San Jose Barangay Hall",.65);
             gt.connect("Cebu North General Hospital","San Jose Barangay Hall",.7);
-            gt.connect("UC Banilad","DSWD 7",3.2);
+            gt.connect("Time Square Talamban","Papsys's BBQ",.45);
+            gt.connect("Papsys's BBQ","San Jose Barangay Hall",2.1);
 
             
 
             //greedy bfs
             Console.WriteLine("Greedy BFS;: ");
-            // gt.GreedyBestFirstSearch("cebu north general hospital","cebu city sports center");
+            gt.GreedyBestFirstSearch("cebu city sports center", "talamban complex");
+
             Console.WriteLine();
+
             //a star
             Console.WriteLine("A star:");
-            gt.myastar("marco polo plaza","cebu city sports center");
+            gt.myastar("cebu city sports center", "talamban complex");
 
         }
     }

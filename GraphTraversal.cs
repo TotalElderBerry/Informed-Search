@@ -14,10 +14,12 @@
 //      +displayAdjacencyList            - Display adjacency list.
 //      +GreedyBestFirstSearch           - Traverse the map using Greedy best first search
 //      +astar                           - Traverse the map using A*
+//      
 //  Utility:
 //      -getNodeByName                   - search the map using the string name
 //      -reconstruct_path                - reconstruct the solution/path
 //      -getLowestFscore                 - get the lowest f(n) in the a list of Node
+//      -solveHeuristic                  - get the heuristic value from the current Node to the goal Node
 //  Attributes:
 //      -graph(LinkedList<Node>)         - Number of places/vertices in the map.
 
@@ -78,19 +80,7 @@ namespace BestFirstSearch
             n.setName(place);
             graph.AddLast(n);
         }
-
-        public void solveHeuristic(string target_place){
-            target_place = target_place.ToLower();
-            Node target = getNodeByName(target_place);
-            LinkedList<Node>.Enumerator iterator = graph.GetEnumerator();
-            while(iterator.MoveNext()){
-                Node start = iterator.Current;
-                start.setHvalue(target);
-            }
-        }
-
         
-
         //------------------------------------------------------------------------
         //  Method Name : connect
         //  Description : Connect one vertex to another vertex with specified weight
@@ -153,7 +143,10 @@ namespace BestFirstSearch
             solveHeuristic(goal_place);
             start_place = start_place.ToLower();
             Node start = getNodeByName(start_place);
-            if(start == null) return; //start place not found
+            if(start == null){
+                Console.WriteLine("Place not found");
+                return; //start place not found
+            } 
 
             //openlist -> list of unexpanded nodes
             //closelist -> list of already expanded nodes
@@ -195,12 +188,21 @@ namespace BestFirstSearch
             Console.WriteLine("No Path");
         }
 
-
+        //------------------------------------------------------------------------
+        //  Method Name : astar
+        //  Description : Traverse the map using A*
+        //  Arguments   : string start_place
+        //                string goal_place
+        //  Return      : Void
+        //------------------------------------------------------------------------
         public void myastar(string start_place,string goal_place){
                 solveHeuristic(goal_place);
                 start_place = start_place.ToLower();
                 Node start = getNodeByName(start_place);
-                if(start == null) return; //no start place found
+                if(start == null) {
+                    Console.WriteLine("Place not found");
+                    return; //start place not found
+                } 
 
 
                 //openlist -> list of unexpanded nodes
@@ -247,79 +249,6 @@ namespace BestFirstSearch
                 Console.WriteLine("No path");    
         }   
 
-        //------------------------------------------------------------------------
-        //  Method Name : astar
-        //  Description : Traverse the map using A*
-        //  Arguments   : string start_place
-        //                string goal_place
-        //  Return      : Void
-        //------------------------------------------------------------------------
-        public void astar(string start_place, string goal_place)
-        {
-            Node start = getNodeByName(start_place);
-
-            if (start == null)
-            {
-                Console.WriteLine("Node not found!");
-                return;
-            }
-
-            LinkedList<Node> openlist = new LinkedList<Node>();
-            LinkedList<Node> closedlist = new LinkedList<Node>();
-
-            start.setFvalue();
-            openlist.AddLast(start);
-
-            while(openlist.Count > 0)
-            {
-                Node current = getLowestFscore(openlist);
-
-                if(current.getName() == goal_place)
-                {
-                    // Console.WriteLine(current.f + " is the final F score!");
-                    reconstruct_path(current);
-                    return;
-                }
-
-                LinkedList<Edge>.Enumerator neighbor = current.getNeighbors().GetEnumerator();
-
-                while(neighbor.MoveNext())
-                {
-                    Edge m = neighbor.Current;
-                    double g_so_far = current.getGvalue() + m.getWeight();
-
-                    if(!closedlist.Contains(m.getNode()) && !openlist.Contains(m.getNode()))
-                    {
-                        // m.node.parent = current;
-                        m.getNode().setParent(current);
-                        // m.node.g = g_so_far;
-                        m.getNode().setGvalue(g_so_far);
-                        // m.node.f = m.node.g + m.node.h;
-                        m.getNode().setFvalue();
-                        openlist.AddLast(m.getNode());
-                    }
-                    else
-                    {
-                        if(g_so_far < m.getNode().getGvalue())
-                        {
-                            // m.node.parent = current;
-                            m.getNode().setParent(current);
-                            // m.node.g = g_so_far;
-                            m.getNode().setGvalue(g_so_far);
-                            // m.node.f = m.node.g + m.node.h;
-                            m.getNode().setFvalue();
-                            if (closedlist.Contains(m.getNode()))
-                            {
-                                openlist.AddLast(m.getNode());
-                            }
-                        }
-                    }
-                }
-                openlist.Remove(current);
-                closedlist.AddLast(current);
-            }
-            Console.WriteLine("No path to goal!");
-        }
 
         // ----------------------
         //  UTILITY FUNCTIONS
@@ -400,6 +329,22 @@ namespace BestFirstSearch
                 }
             }
             return lowest;
+        }
+
+        //------------------------------------------------------------------------
+        //  Method Name : solveHeuristic
+        //  Description : Computes the heuristic value from the current state to the targe
+        //  Arguments   : String target_place
+        //  Return      : void
+        //------------------------------------------------------------------------
+        private void solveHeuristic(string target_place){
+            target_place = target_place.ToLower();
+            Node target = getNodeByName(target_place);
+            LinkedList<Node>.Enumerator iterator = graph.GetEnumerator();
+            while(iterator.MoveNext()){
+                Node start = iterator.Current;
+                start.setHvalue(target);
+            }
         }
     }
 }
