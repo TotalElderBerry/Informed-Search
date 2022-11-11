@@ -47,13 +47,12 @@ namespace BestFirstSearch
             gt.connect("St. Peter","DSWD 7",2.2);
             gt.connect("St. Peter","Ayala Terraces",3);
             gt.connect("DSWD 7","Metrobank",.55);
-            gt.connect("Landers Superstore","Ayala Terraces",0.55);
             gt.connect("Landers Superstore","UC Banilad",3.9);
+            gt.connect("Landers Superstore","Ayala Terraces",3.9);
             gt.connect("Ayala Terraces","UC Banilad",2.6);
             gt.connect("Ayala Terraces","Waterfront Hotel",1.8);
             gt.connect("Ayala Terraces","Quest Hotel",0.55);
             gt.connect("UP Cebu","Sugbo Mercado",2.3);
-            gt.connect("Waterfront Hotel","Ayala Central Bloc",1.3);
             gt.connect("Sugbo Mercado","Ayala Central Bloc",.24);
             gt.connect("Sugbo Mercado","Apas Barangay Hall",1);
             gt.connect("Apas Barangay Hall","Marco Polo Plaza",3.8);
@@ -62,7 +61,6 @@ namespace BestFirstSearch
             gt.connect("Oakridge Residences","Gaisano Country Mall",1.1);
             gt.connect("Gaisano Country Mall","Banilad Town Center",.28);
             gt.connect("Gaisano Country Mall","UC Banilad",.042);
-            gt.connect("UC Banilad","Banilad Town Center",.4);
             gt.connect("Banilad Town Center","Coffee Factory",.5);
             gt.connect("Banilad Town Center","UV Gullas",1.1);
             gt.connect("UV Gullas","Bright Academy",.11);
@@ -78,15 +76,21 @@ namespace BestFirstSearch
 
             
 
+            gt.displayAdjacencyList();
+            Console.WriteLine();
+
+            String start = "talamban complex";
+            String end = "dswd 7";
+
             //greedy bfs
             Console.WriteLine("Greedy BFS;: ");
-            gt.GreedyBestFirstSearch("cebu city sports center", "talamban complex");
+            gt.GreedyBestFirstSearch(start,end);
 
             Console.WriteLine();
 
             //a star
             Console.WriteLine("A star:");
-            gt.myastar("cebu city sports center", "talamban complex");
+            gt.myastar(start,end);
 
         }
     }
